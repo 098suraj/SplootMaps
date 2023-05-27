@@ -3,7 +3,8 @@
 - Explore the possibilities of creating Ui and Ux using a Mobile App which we can use on a daily base.
 - Build a fully functional Android app built entirely with Kotlin and Jetpack Compose.
 
-https://github.com/098suraj/SplootMaps/assets/30719688/193d9edb-dd78-4e13-8447-9b69661445b1
+
+ https://github.com/098suraj/SplootMaps/assets/30719688/193d9edb-dd78-4e13-8447-9b69661445b1
   
 ## 🛠 Built With
 
@@ -23,6 +24,8 @@ https://github.com/098suraj/SplootMaps/assets/30719688/193d9edb-dd78-4e13-8447-9
 - [VersionCatalog](https://docs.gradle.org/current/userguide/platforms.html)-Gradle VersionCatalog
 - [Kotlin-DSL](https://docs.gradle.org/current/userguide/kotlin_dsl.html)-Kotlin Gradle DSL
 -[CI-CD](https://github.com/features/actions)-CI/CD using Github Actions
+-[Google-Maps Api](https://developers.google.com/maps)- For fetching the Location, and Nearby Places.
+-[Compose -MapsSDK]-(https://developers.google.com/maps/documentation/android-sdk/maps-compose) -For utilising Google maps in Jetpack Compose.
 <br />
 
 ## 🗼 Architecture
