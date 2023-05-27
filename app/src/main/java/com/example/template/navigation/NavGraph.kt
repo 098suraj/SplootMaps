@@ -10,15 +10,15 @@ import com.example.template.screen.maps.MapScreenHolder
 import com.example.template.screen.permission.PermissionHandler
 
 @Composable
-fun navGraph(
+fun NavGraph(
     navController: NavHostController,
     startDestination: String,
-    padding: Modifier,
+    padding: Modifier = Modifier,
 
-    ) {
+) {
     NavHost(navController = navController, startDestination = startDestination) {
         composable(route = Routes.PermissionDashboard.routes) {
-            PermissionHandler(navController,padding)
+            PermissionHandler(navController, padding)
         }
         composable(route = Routes.HomeScreen.routes) {
             HomeScreen(navController)

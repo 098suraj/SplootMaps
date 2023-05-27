@@ -12,10 +12,10 @@ import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.template.navigation.NavGraph
 import com.example.template.navigation.Routes
-import com.example.template.navigation.navGraph
 import com.example.template.services.GpsServices
-import com.example.template.ui.theme.TemplateTheme
+import com.example.template.ui.theme.SplootMapsTheme
 import com.example.template.utils.permissionList
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
@@ -27,26 +27,24 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            TemplateTheme {
+            SplootMapsTheme {
                 Scaffold() { innerPadding ->
                     val navController = rememberNavController()
-                    navGraph(
+                    NavGraph(
                         navController = navController,
                         startDestination = Routes.HomeScreen.routes,
-                        Modifier.padding(innerPadding)
+                        Modifier.padding(innerPadding),
                     )
                 }
-
             }
         }
     }
-
 }
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun HomeScreen(
-    navController: NavController
+    navController: NavController,
 ) {
     val state = rememberMultiplePermissionsState(permissionList)
     val isGpsEnabled by GpsServices.isGpsEnabled.collectAsStateWithLifecycle()
@@ -59,6 +57,4 @@ fun HomeScreen(
             navController.navigate(Routes.PermissionDashboard.routes)
         }
     }
-
 }
-

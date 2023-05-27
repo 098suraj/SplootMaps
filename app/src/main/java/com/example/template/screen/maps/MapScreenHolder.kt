@@ -1,7 +1,5 @@
 package com.example.template.screen.maps
 
-import android.graphics.Bitmap
-import android.graphics.drawable.BitmapDrawable
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.expandIn
@@ -22,18 +20,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
-import coil.compose.rememberAsyncImagePainter
-import coil.request.ImageRequest
 import com.example.template.model.LocationModel
 import com.example.template.model.PlacesModel
 import com.example.template.screen.components.ModalSheet
 import com.google.android.gms.maps.model.BitmapDescriptor
-import com.google.android.gms.maps.model.BitmapDescriptorFactory
-
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.CameraPositionState
 import com.google.maps.android.compose.GoogleMap
@@ -44,13 +37,12 @@ import com.google.maps.android.compose.rememberMarkerState
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
-
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalAnimationApi::class)
 @Composable
 fun MapScreenHolder(
     navHostController: NavHostController,
-    mapsViewModel: MapsViewModel = hiltViewModel(),
-    modifier: Modifier
+    modifier: Modifier = Modifier,
+    mapsViewModel: MapsViewModel = hiltViewModel()
 ) {
     val screenUiState by mapsViewModel.mapUiState.collectAsStateWithLifecycle()
     val screenState = rememberMapsScreenState(state = screenUiState)
@@ -74,7 +66,7 @@ fun MapScreenHolder(
     AnimatedVisibility(
         visible = screenState.sheetState.isVisible,
         enter = scaleIn() + expandIn(),
-        exit = scaleOut() + fadeOut()
+        exit = scaleOut() + fadeOut(),
     ) {
         ModalSheet(
             modifier = modifier,
@@ -82,7 +74,6 @@ fun MapScreenHolder(
             sheetState = screenState.sheetState,
             state = modelSheetUiState,
         )
-
     }
 
     when (screenUiState.loadingLocation) {
@@ -93,8 +84,9 @@ fun MapScreenHolder(
                 mapsViewModel.getNearByPlaces(
                     LocationModel(
                         latitude = currentLocation.value.latitude,
-                        longitude = currentLocation.value.longitude
-                    ), 5000
+                        longitude = currentLocation.value.longitude,
+                    ),
+                    5000,
                 )
             }
             currentLocation.value = screenUiState.location
@@ -105,30 +97,29 @@ fun MapScreenHolder(
                 Text(
                     text = screenUiState.errorMessage,
                     color = MaterialTheme.colorScheme.onTertiaryContainer,
-                    modifier = modifier.align(
-                        Alignment.Center
-                    )
+                    modifier = Modifier.align(
+                        Alignment.Center,
+                    ),
                 )
             }
         }
     }
 }
 
-
 @Composable
 private fun MapScreen(
     cameraPositionState: CameraPositionState,
     onTap: (LatLng) -> Unit,
-    modifier: Modifier,
     onMyLocationButtonClick: () -> Boolean,
     onMapLoaded: () -> Unit,
     screenUiState: MapsScreenUiState,
     markerOnClick: (PlacesModel.Result) -> Unit,
     screenState: MapsScreenState,
+    modifier: Modifier = Modifier
 ) {
     Scaffold(modifier = modifier.fillMaxSize()) { paddingValues ->
         GoogleMap(
-            modifier = modifier
+            modifier = Modifier
                 .padding(paddingValues)
                 .fillMaxSize(),
             cameraPositionState = cameraPositionState,
@@ -148,14 +139,14 @@ private fun MapScreen(
                         val icon = remember {
                             mutableStateOf<BitmapDescriptor?>(null)
                         }
-                        screenState.urlToBitmap(imageURL = placeModel.icon, onSuccess = {
+                        screenState.urlToBitmap(imageURL = placeModel.iconMaskBaseUri, onSuccess = {
 //                            icon.value=BitmapDescriptorFactory.fromBitmap(it)
                         })
 
                         MarkerItem(
                             placeModel = placeModel,
                             onClick = markerOnClick,
-                            icon = icon.value
+                            icon = icon.value,
                         )
                     }
                 }
@@ -173,7 +164,8 @@ fun MarkerItem(
     onClick: (placeModel: PlacesModel.Result) -> Unit,
 ) {
     val position = LatLng(
-        placeModel.geometry.location.lat, placeModel.geometry.location.lng
+        placeModel.geometry.location.lat,
+        placeModel.geometry.location.lng,
     )
     Marker(
         state = rememberMarkerState(position = position),
@@ -183,8 +175,6 @@ fun MarkerItem(
             onClick(placeModel)
             true
         },
-        title = placeModel.name
+        title = placeModel.name,
     )
-
-
 }

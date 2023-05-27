@@ -1,10 +1,8 @@
 package com.example.template.remote
 
-import android.location.Location
 import com.example.template.model.LocationModel
 import com.example.template.model.PlaceDetails
 import com.example.template.model.PlacesModel
-import com.google.android.libraries.places.api.model.Place
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.launch
@@ -31,10 +29,8 @@ class ApiServiceImp @Inject constructor(private val apiService: ApiService) {
             override fun onFailure(call: Call<PlacesModel>, t: Throwable) {
                 Timber.tag("ApiServiceImp").d(t)
             }
-
         })
         awaitClose { apiCallback.cancel() }
-
     }
 
     fun getPlaceDetail(place_Id: String) = callbackFlow {
@@ -56,6 +52,4 @@ class ApiServiceImp @Inject constructor(private val apiService: ApiService) {
         })
         awaitClose { apiCallBack.cancel() }
     }
-
 }
-

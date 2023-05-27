@@ -17,6 +17,7 @@ buildscript {
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
+
 }
 @Suppress("DSL_SCOPE_VIOLATION")
 plugins {
@@ -28,7 +29,8 @@ plugins {
 
 
 subprojects {
-    apply(from = "../buildScript/detekt.gradle")
+    apply(from = "../buildscript/detekt.gradle")
+
 }
 
 tasks.register("clean", Delete::class) {

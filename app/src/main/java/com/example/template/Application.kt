@@ -3,14 +3,8 @@ package com.example.template
 import android.app.Application
 import android.content.IntentFilter
 import android.location.LocationManager
-import androidx.compose.ui.platform.LocalContext
-import com.example.template.BuildConfig.MAPS_API_KEY
 import com.example.template.services.GpsServices
 import com.example.template.utils.checkGpsState
-import com.google.android.gms.common.api.internal.ApiKey
-import com.google.android.gms.maps.MapsInitializer
-import com.google.android.gms.maps.OnMapsSdkInitializedCallback
-import com.google.android.libraries.places.api.Places
 import dagger.hilt.android.HiltAndroidApp
 import timber.log.Timber
 import timber.log.Timber.Forest.plant
@@ -27,19 +21,15 @@ class Application : Application() {
         }
         GpsServices._isGpsEnabled.value = applicationContext.checkGpsState()
         registerGpsService()
-
     }
 
     private fun registerGpsService() {
         val intentFilter = IntentFilter(LocationManager.PROVIDERS_CHANGED_ACTION)
         registerReceiver(gpsService, intentFilter)
-
     }
 
     override fun onTerminate() {
         unregisterReceiver(gpsService)
         super.onTerminate()
-
     }
-
 }

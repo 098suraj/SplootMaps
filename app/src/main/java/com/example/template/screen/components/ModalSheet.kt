@@ -6,11 +6,9 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -43,18 +41,16 @@ import coil.request.ImageRequest
 import com.example.template.R
 import com.example.template.screen.maps.PlaceModelSheetState
 import com.example.template.screen.maps.PlaceModelSheetUi
-import timber.log.Timber
 import kotlin.math.ceil
 import kotlin.math.floor
-
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ModalSheet(
     onDismissRequest: () -> Unit,
     sheetState: SheetState,
-    modifier: Modifier,
-    state: PlaceModelSheetUi
+    state: PlaceModelSheetUi,
+    modifier: Modifier = Modifier
 ) {
     ModalBottomSheet(
         onDismissRequest = onDismissRequest,
@@ -66,61 +62,60 @@ fun ModalSheet(
     ) {
         MarkerDetailSheet(state = state)
     }
-
 }
 
-
 @Composable
-fun MarkerDetailSheet(modifier: Modifier = Modifier, state: PlaceModelSheetUi) {
+fun MarkerDetailSheet(state: PlaceModelSheetUi, modifier: Modifier = Modifier) {
     val placeModel = state.markerPlacesModel
     Column(
         modifier
             .fillMaxSize()
-            .padding(15.dp)
+            .padding(15.dp),
     ) {
         when (state.placeModelSheetState) {
             PlaceModelSheetState.Loading -> {
-                Box(modifier = modifier.fillMaxSize()) {
+                Box(Modifier.fillMaxSize()) {
                     CircularProgressIndicator(
-                        modifier.align(Alignment.Center),
-                        color = MaterialTheme.colorScheme.onSecondaryContainer
+                        Modifier.align(Alignment.Center),
+                        color = MaterialTheme.colorScheme.onSecondaryContainer,
                     )
                 }
             }
 
             PlaceModelSheetState.ERROR -> {}
             PlaceModelSheetState.Loaded -> {
-                val context=LocalContext.current
+                val context = LocalContext.current
                 Text(
                     text = placeModel!!.name,
                     style = MaterialTheme.typography.titleMedium,
-                    color = MaterialTheme.colorScheme.onSecondaryContainer
+                    color = MaterialTheme.colorScheme.onSecondaryContainer,
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
                     text = "${state.placeDetails?.result?.formattedAddress}",
                     style = MaterialTheme.typography.titleMedium,
-                    color = MaterialTheme.colorScheme.onSecondaryContainer
+                    color = MaterialTheme.colorScheme.onSecondaryContainer,
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Row {
                     placeModel.rating?.let { rating ->
                         Text(
                             text = rating.toString(),
-                            color = MaterialTheme.colorScheme.onSecondaryContainer
+                            color = MaterialTheme.colorScheme.onSecondaryContainer,
                         )
                         Spacer(modifier = Modifier.width(3.dp))
                         RatingBar(rating = rating)
                         Spacer(modifier = Modifier.width(2.dp))
                         Text(
                             text = "(${placeModel.userRatingsTotal})",
-                            color = MaterialTheme.colorScheme.onSecondaryContainer
+                            color = MaterialTheme.colorScheme.onSecondaryContainer,
                         )
                     }
                 }
                 Spacer(modifier = Modifier.height(8.dp))
                 Button(onClick = {
-                    val gmmIntentUri = Uri.parse("google.navigation:q="+state.markerPlacesModel?.geometry?.location?.lat+","+state.markerPlacesModel?.geometry?.location?.lng + "&mode=b")
+                    val gmmIntentUri =
+                        Uri.parse("google.navigation:q=" + state.markerPlacesModel?.geometry?.location?.lat + "," + state.markerPlacesModel?.geometry?.location?.lng + "&mode=b")
                     val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
                     mapIntent.setPackage("com.google.android.apps.maps")
                     context.startActivity(mapIntent)
@@ -128,13 +123,13 @@ fun MarkerDetailSheet(modifier: Modifier = Modifier, state: PlaceModelSheetUi) {
                     Text(text = "Directions")
                 }
                 Spacer(modifier = Modifier.height(8.dp))
-                PhotoList(modifier = modifier, imageUrlList = state.imageList)
+                PhotoList(modifier = Modifier, imageUrlList = state.imageList)
                 Spacer(modifier = Modifier.height(4.dp))
                 state.markerPlacesModel?.let {
                     Text(
                         text = "Business Status : ${it.businessStatus}",
                         style = MaterialTheme.typography.titleSmall,
-                        color = MaterialTheme.colorScheme.onSecondaryContainer
+                        color = MaterialTheme.colorScheme.onSecondaryContainer,
                     )
                 }
 
@@ -143,7 +138,7 @@ fun MarkerDetailSheet(modifier: Modifier = Modifier, state: PlaceModelSheetUi) {
                     Text(
                         text = "Open Now : ${it.openingHours?.openNow}",
                         style = MaterialTheme.typography.titleSmall,
-                        color = MaterialTheme.colorScheme.onSecondaryContainer
+                        color = MaterialTheme.colorScheme.onSecondaryContainer,
                     )
                 }
 
@@ -152,7 +147,7 @@ fun MarkerDetailSheet(modifier: Modifier = Modifier, state: PlaceModelSheetUi) {
                     Text(
                         text = "Plus Code : ${it.plusCode?.compoundCode}",
                         style = MaterialTheme.typography.titleSmall,
-                        color = MaterialTheme.colorScheme.onSecondaryContainer
+                        color = MaterialTheme.colorScheme.onSecondaryContainer,
                     )
                 }
 
@@ -161,7 +156,6 @@ fun MarkerDetailSheet(modifier: Modifier = Modifier, state: PlaceModelSheetUi) {
         }
     }
 }
-
 
 @Composable
 fun RatingBar(
@@ -181,21 +175,21 @@ fun RatingBar(
             Icon(
                 painter = painterResource(id = R.drawable.baseline_star_half_24),
                 contentDescription = null,
-                tint = starsColor
+                tint = starsColor,
             )
         }
         repeat(unfilledStars) {
             Icon(
                 painter = painterResource(id = R.drawable.baseline_star_outline_24),
                 contentDescription = null,
-                tint = starsColor
+                tint = starsColor,
             )
         }
     }
 }
 
 @Composable
-fun PhotoList(modifier: Modifier, imageUrlList: List<String>) {
+fun PhotoList(imageUrlList: List<String>, modifier: Modifier = Modifier) {
     val lazyListState = rememberLazyListState()
     LazyRow(
         state = lazyListState,
@@ -208,7 +202,7 @@ fun PhotoList(modifier: Modifier, imageUrlList: List<String>) {
                     .clip(RoundedCornerShape(15.dp))
                     .height(300.dp)
                     .width(260.dp),
-                contentAlignment = Alignment.BottomCenter
+                contentAlignment = Alignment.BottomCenter,
             ) {
                 Image(
                     modifier = Modifier.fillMaxSize(),
@@ -216,10 +210,10 @@ fun PhotoList(modifier: Modifier, imageUrlList: List<String>) {
                         ImageRequest.Builder(LocalContext.current).data(data = it)
                             .apply(block = fun ImageRequest.Builder.() {
                                 crossfade(true)
-                            }).build()
+                            }).build(),
                     ),
                     contentDescription = null,
-                    contentScale = ContentScale.FillHeight
+                    contentScale = ContentScale.FillHeight,
                 )
             }
         }

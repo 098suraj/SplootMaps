@@ -20,7 +20,7 @@ import javax.inject.Inject
 
 class LocationImp @Inject constructor(
     private val fusedLocationClient: FusedLocationProviderClient,
-    private val context: Context
+    private val context: Context,
 ) : LocationInterface {
     @SuppressLint("MissingPermission")
     override fun getLocationUpdates(): Flow<LocationModel> {
@@ -28,7 +28,6 @@ class LocationImp @Inject constructor(
             if (!context.hasLocationPermission()) {
                 throw LocationInterface.LocationException("Missing location permission")
             }
-
 
             val locationRequest =
                 LocationRequest
@@ -44,21 +43,17 @@ class LocationImp @Inject constructor(
                 }
             }
 
-
             fusedLocationClient.requestLocationUpdates(
                 locationRequest,
                 locationCallback,
-                Looper.getMainLooper()
+                Looper.getMainLooper(),
             )
-
 
             awaitClose {
                 Timber.d("Location updates removed")
                 fusedLocationClient.removeLocationUpdates(locationCallback)
             }
-
         }
-
     }
 
     @SuppressLint("MissingPermission")
@@ -71,14 +66,10 @@ class LocationImp @Inject constructor(
             // Got last known location. In some rare situations this can be null.
             lastLocation?.let {
                 Timber.d("fetched current location $it")
-                location(LocationModel(it.latitude,it.longitude))
+                location(LocationModel(it.latitude, it.longitude))
             }
         }.addOnFailureListener { exception ->
             Timber.d("fetch current location failed : ${exception.message}")
         }
-
     }
-
-
 }
-

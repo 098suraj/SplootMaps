@@ -28,22 +28,22 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun rememberMapsScreenState(
+    state: MapsScreenUiState,
     cameraPositionState: CameraPositionState = rememberCameraPositionState(),
     coroutineScope: CoroutineScope = rememberCoroutineScope(),
-    state: MapsScreenUiState,
     rememberBottomSheetState: SheetState = rememberModalBottomSheetState(),
     context: Context = LocalContext.current
+
 ) = remember(cameraPositionState, coroutineScope, context) {
     return@remember MapsScreenState(
         cameraPositionState = cameraPositionState,
         coroutineScope = coroutineScope,
         state = state,
         rememberBottomSheetState = rememberBottomSheetState,
-        context = context
+        context = context,
     )
 }
 
@@ -53,7 +53,7 @@ class MapsScreenState(
     val coroutineScope: CoroutineScope,
     val state: MapsScreenUiState,
     val rememberBottomSheetState: SheetState,
-    val context: Context
+    val context: Context,
 ) {
 
     val sheetState = rememberBottomSheetState
@@ -110,8 +110,8 @@ data class MapsScreenUiState(
     var errorMessage: String = "",
     var places: PlacesModel? = null,
     var location: LocationModel = LocationModel(0.toDouble(), 0.toDouble()),
-    var bitmap: Bitmap?=null,
-    var placeDetails:PlaceDetails?=null
+    var bitmap: Bitmap? = null,
+    var placeDetails: PlaceDetails? = null,
 )
 
 data class PlaceModelSheetUi(
@@ -119,7 +119,7 @@ data class PlaceModelSheetUi(
     var errorMessage: String = "",
     var placeDetails: PlaceDetails? = null,
     var markerPlacesModel: PlacesModel.Result? = null,
-    var imageList:List<String> = emptyList()
+    var imageList: List<String> = emptyList(),
 )
 
 enum class LoadingLocation {

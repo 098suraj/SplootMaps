@@ -20,7 +20,7 @@ import javax.inject.Inject
 @HiltViewModel
 class MapsViewModel @Inject constructor(
     private val locationRepo: LocationImp,
-    private val apiServiceImp: ApiServiceImp
+    private val apiServiceImp: ApiServiceImp,
 ) : ViewModel() {
     init {
         getCurrentLocation()
@@ -37,7 +37,7 @@ class MapsViewModel @Inject constructor(
                 _mapUiState.update { mapsScreenUiState ->
                     mapsScreenUiState.copy(
                         placesLoading = false,
-                        places = it
+                        places = it,
                     )
                 }
                 Timber.tag("NearByPlaces-VM").d(_mapUiState.value.toString())
@@ -58,7 +58,7 @@ class MapsViewModel @Inject constructor(
                         imageList = it.result.photos.map {
                             "https://maps.googleapis.com/maps/api/place/photo?key=${BuildConfig.MAPS_API_KEY}&maxwidth=400&maxheight=600&photo_reference=${it.photoReference}"
                         },
-                        placeDetails = it
+                        placeDetails = it,
                     )
                 }
             }
@@ -72,9 +72,8 @@ class MapsViewModel @Inject constructor(
                     _mapUiState.update { mapsScreenUiState ->
                         mapsScreenUiState.copy(
                             error = LoadingLocation.ERROR,
-                            errorMessage = it.localizedMessage
+                            errorMessage = it.localizedMessage,
                         )
-
                     }
                     Timber.d(it.localizedMessage)
                 }
@@ -83,7 +82,7 @@ class MapsViewModel @Inject constructor(
                     _mapUiState.update { mapsScreenUiState ->
                         mapsScreenUiState.copy(
                             loadingLocation = LoadingLocation.Loaded,
-                            location = it
+                            location = it,
                         )
                     }
                 }
@@ -96,15 +95,10 @@ class MapsViewModel @Inject constructor(
                 _mapUiState.update { mapsScreenUiState ->
                     mapsScreenUiState.copy(
                         loadingLocation = LoadingLocation.Loaded,
-                        location = it
+                        location = it,
                     )
-
                 }
             }
         }
-
     }
 }
-
-
-

@@ -1,6 +1,5 @@
 package com.example.template.model
 
-
 import com.google.gson.annotations.SerializedName
 
 data class PlaceDetails(
@@ -9,7 +8,7 @@ data class PlaceDetails(
     @SerializedName("result")
     val result: Result,
     @SerializedName("status")
-    val status: String
+    val status: String,
 ) {
     data class Result(
         @SerializedName("address_components")
@@ -41,7 +40,7 @@ data class PlaceDetails(
         @SerializedName("utc_offset")
         val utcOffset: Int,
         @SerializedName("vicinity")
-        val vicinity: String
+        val vicinity: String,
     ) {
         data class AddressComponent(
             @SerializedName("long_name")
@@ -49,40 +48,40 @@ data class PlaceDetails(
             @SerializedName("short_name")
             val shortName: String,
             @SerializedName("types")
-            val types: List<String>
+            val types: List<String>,
         )
 
         data class Geometry(
             @SerializedName("location")
             val location: Location,
             @SerializedName("viewport")
-            val viewport: Viewport
+            val viewport: Viewport,
         ) {
             data class Location(
                 @SerializedName("lat")
                 val lat: Double,
                 @SerializedName("lng")
-                val lng: Double
+                val lng: Double,
             )
 
             data class Viewport(
                 @SerializedName("northeast")
                 val northeast: Northeast,
                 @SerializedName("southwest")
-                val southwest: Southwest
+                val southwest: Southwest,
             ) {
                 data class Northeast(
                     @SerializedName("lat")
                     val lat: Double,
                     @SerializedName("lng")
-                    val lng: Double
+                    val lng: Double,
                 )
 
                 data class Southwest(
                     @SerializedName("lat")
                     val lat: Double,
                     @SerializedName("lng")
-                    val lng: Double
+                    val lng: Double,
                 )
             }
         }
@@ -95,7 +94,7 @@ data class PlaceDetails(
             @SerializedName("photo_reference")
             val photoReference: String,
             @SerializedName("width")
-            val width: Int
+            val width: Int,
         )
     }
 }

@@ -18,7 +18,7 @@ android {
     compileSdk = 33
 
     defaultConfig {
-        applicationId = "com.example.template"
+        applicationId = "com.splootmaps.app"
         minSdk = 24
         targetSdk = 33
         versionCode = 1

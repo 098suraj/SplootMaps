@@ -1,6 +1,5 @@
 package com.example.template.model
 
-
 import com.google.gson.annotations.SerializedName
 
 data class PlacesModel(
@@ -11,7 +10,7 @@ data class PlacesModel(
     @SerializedName("results")
     val results: List<Result>,
     @SerializedName("status")
-    val status: String
+    val status: String,
 ) {
     data class Result(
         @SerializedName("business_status")
@@ -47,46 +46,46 @@ data class PlacesModel(
         @SerializedName("user_ratings_total")
         val userRatingsTotal: Int?,
         @SerializedName("vicinity")
-        val vicinity: String
+        val vicinity: String,
     ) {
         data class Geometry(
             @SerializedName("location")
             val location: Location,
             @SerializedName("viewport")
-            val viewport: Viewport
+            val viewport: Viewport,
         ) {
             data class Location(
                 @SerializedName("lat")
                 val lat: Double,
                 @SerializedName("lng")
-                val lng: Double
+                val lng: Double,
             )
 
             data class Viewport(
                 @SerializedName("northeast")
                 val northeast: Northeast,
                 @SerializedName("southwest")
-                val southwest: Southwest
+                val southwest: Southwest,
             ) {
                 data class Northeast(
                     @SerializedName("lat")
                     val lat: Double,
                     @SerializedName("lng")
-                    val lng: Double
+                    val lng: Double,
                 )
 
                 data class Southwest(
                     @SerializedName("lat")
                     val lat: Double,
                     @SerializedName("lng")
-                    val lng: Double
+                    val lng: Double,
                 )
             }
         }
 
         data class OpeningHours(
             @SerializedName("open_now")
-            val openNow: Boolean
+            val openNow: Boolean,
         )
 
         data class Photo(
@@ -97,14 +96,14 @@ data class PlacesModel(
             @SerializedName("photo_reference")
             val photoReference: String,
             @SerializedName("width")
-            val width: Int
+            val width: Int,
         )
 
         data class PlusCode(
             @SerializedName("compound_code")
             val compoundCode: String,
             @SerializedName("global_code")
-            val globalCode: String
+            val globalCode: String,
         )
     }
 }

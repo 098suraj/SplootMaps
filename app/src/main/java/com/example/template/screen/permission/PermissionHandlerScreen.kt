@@ -25,7 +25,6 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -37,7 +36,6 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
-import timber.log.Timber
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
@@ -45,7 +43,11 @@ fun PermissionHandler(navController: NavHostController, modifier: Modifier = Mod
     val state = rememberPermissionHandlerState(navController = navController)
     val isGpsEnabled by state.isGpsEnabled.collectAsStateWithLifecycle()
     val isLocationEnabled by state.locationStatus().collectAsStateWithLifecycle()
-    PermissionScreen(state, isGpsEnabled, isLocationEnabled, onClick = { if (isGpsEnabled && isLocationEnabled) state.onClickNavigate() else state.onClickIntent()  })
+    PermissionScreen(
+        state,
+        isGpsEnabled,
+        isLocationEnabled,
+        onClick = { if (isGpsEnabled && isLocationEnabled) state.onClickNavigate() else state.onClickIntent() })
 }
 
 @Composable
@@ -60,18 +62,18 @@ fun PermissionScreen(
     Box(
         modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background)
+            .background(MaterialTheme.colorScheme.background),
     ) {
         Column(modifier = Modifier.padding(horizontal = 16.dp)) {
-            Spacer(modifier = modifier.height(20.dp))
+            Spacer(modifier = Modifier.height(20.dp))
             PermissionCard(
                 icon = permissionCardDetails[0].icon,
                 title = permissionCardDetails[0].title,
-                permissionStatus = "${permissionCardDetails[0].permissionStatus} ${isLocationEnabled}",
+                permissionStatus = "${permissionCardDetails[0].permissionStatus} $isLocationEnabled",
                 description = permissionCardDetails[0].description,
-                onClick = { state.invokeLocationPermission() }
+                onClick = { state.invokeLocationPermission() },
             )
-            Spacer(modifier = modifier.height(20.dp))
+            Spacer(modifier = Modifier.height(20.dp))
 
             AnimatedVisibility(visible = isLocationEnabled) {
                 PermissionCard(
@@ -79,31 +81,33 @@ fun PermissionScreen(
                     title = permissionCardDetails[1].title,
                     permissionStatus = "${permissionCardDetails[1].permissionStatus} $isGpsEnabled",
                     description = permissionCardDetails[1].description,
-                    onClick = { state.invokeGpsLocation() }
+                    onClick = { state.invokeGpsLocation() },
                 )
             }
         }
         Button(
-            modifier = modifier
+            modifier = Modifier
                 .align(Alignment.BottomCenter)
                 .fillMaxWidth()
                 .padding(16.dp),
-            onClick = onClick
+            onClick = onClick,
         ) {
-            Text(if(!isGpsEnabled || !isLocationEnabled )"Go to settings" else "Open Map", color = MaterialTheme.colorScheme.onPrimary)
+            Text(
+                if (!isGpsEnabled || !isLocationEnabled) "Go to settings" else "Open Map",
+                color = MaterialTheme.colorScheme.onPrimary
+            )
         }
     }
-
 }
 
 @Composable
 fun PermissionCard(
-    modifier: Modifier = Modifier,
     icon: ImageVector,
     title: String,
     permissionStatus: String,
     description: String,
-    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit
 ) {
     var isExpanded by remember {
         mutableStateOf(false)
@@ -113,31 +117,31 @@ fun PermissionCard(
             .fillMaxWidth()
             .wrapContentHeight(),
         elevation = CardDefaults.cardElevation(4.dp),
-        colors = CardDefaults.cardColors(MaterialTheme.colorScheme.tertiaryContainer)
+        colors = CardDefaults.cardColors(MaterialTheme.colorScheme.tertiaryContainer),
     ) {
-        Column(modifier = modifier.padding(15.dp)) {
+        Column(modifier = Modifier.padding(15.dp)) {
             Row(
-                modifier = modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Icon(
                         imageVector = icon,
                         contentDescription = null,
-                        tint = MaterialTheme.colorScheme.onTertiaryContainer
+                        tint = MaterialTheme.colorScheme.onTertiaryContainer,
                     )
                     Spacer(Modifier.width(8.dp))
                     Column {
                         Text(
                             text = title,
                             style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.onTertiaryContainer
+                            color = MaterialTheme.colorScheme.onTertiaryContainer,
                         )
                         Text(
                             permissionStatus,
                             style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.onTertiaryContainer
+                            color = MaterialTheme.colorScheme.onTertiaryContainer,
                         )
                     }
                 }
@@ -151,19 +155,19 @@ fun PermissionCard(
                             contentDescription = null,
                             tint = MaterialTheme.colorScheme.onTertiaryContainer,
                         )
-                    }
+                    },
                 )
                 Spacer(Modifier.width(2.dp))
                 Button(
-                    modifier = modifier
+                    modifier = Modifier
                         .wrapContentWidth()
                         .height(70.dp)
                         .padding(16.dp),
-                    onClick = onClick
+                    onClick = onClick,
                 ) {
                     Text(
                         "Grant",
-                        color = MaterialTheme.colorScheme.onPrimary
+                        color = MaterialTheme.colorScheme.onPrimary,
                     )
                 }
             }
@@ -171,10 +175,9 @@ fun PermissionCard(
                 Spacer(Modifier.height(4.dp))
                 Text(
                     description,
-                    color = MaterialTheme.colorScheme.onTertiaryContainer
+                    color = MaterialTheme.colorScheme.onTertiaryContainer,
                 )
             }
         }
     }
-
 }

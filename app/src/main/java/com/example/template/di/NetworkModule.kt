@@ -24,7 +24,6 @@ object NetworkModule {
             .build()
     }
 
-
     @Provides
     @Singleton
     fun providesRetrofit(okHttpClient: OkHttpClient): Retrofit {
